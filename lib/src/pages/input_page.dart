@@ -6,13 +6,17 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  String _nombre = '';
-  String _email = '';
+  String _nombreM = '';
+  String _nombreD = '';
   String _fecha = '';
+  String _edad = '';
+  String _telefono = '';
+  String _raza = '';
+  String _sexo = '';
 
-  String _opcionSeleccionada = 'Volar';
+  String _opcionSeleccionada = 'Canino';
 
-  List<String> _poderes = ['Volar', 'Rayos X', 'Super Aliento', 'Super Fuerza'];
+  List<String> _tipoMascota = ['Canino', 'Felino', 'Acuático', 'Ave'];
 
   TextEditingController _inputFieldDateController = new TextEditingController();
 
@@ -27,15 +31,28 @@ class _InputPageState extends State<InputPage> {
         children: <Widget>[
           _crearInput(),
           Divider(),
-          _crearEmail(),
+          _crearInput2(),
           Divider(),
-          _crearPassword(),
+          _crearEdad(),
           Divider(),
-          _crearFecha(context),
+          _crearTel(),
+          Divider(),
+          _crearRaza(),
           Divider(),
           _crearDropdown(),
           Divider(),
-          _crearPersona()
+          _crearFecha(context),
+          Divider(),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: RaisedButton(
+              child: Text('Enviar'),
+              color: Colors.blue,
+              textColor: Colors.white,
+              shape: StadiumBorder(),
+              onPressed: () => _mostrarAlert(context),
+            ),
+          ),
         ],
       ),
     );
@@ -47,48 +64,86 @@ class _InputPageState extends State<InputPage> {
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-          counter: Text('Letras ${_nombre.length}'),
-          hintText: 'Nombre de la persona',
-          labelText: 'Nombre',
-          helperText: 'Sólo es el nombre',
-          suffixIcon: Icon(Icons.accessibility),
-          icon: Icon(Icons.account_circle)),
+          hintText: 'Nombre de la mascota',
+          labelText: 'Nombre mascota',
+          suffixIcon: Icon(Icons.pets),
+          icon: Icon(Icons.pets_rounded)),
       onChanged: (valor) {
         setState(() {
-          _nombre = valor;
+          _nombreM = valor;
         });
       },
     );
   }
 
-  Widget _crearEmail() {
+  Widget _crearInput2() {
     return TextField(
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-            hintText: 'Email',
-            labelText: 'Email',
-            suffixIcon: Icon(Icons.alternate_email),
-            icon: Icon(Icons.email)),
-        onChanged: (valor) => setState(() {
-              _email = valor;
-            }));
+      // autofocus: true,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+          hintText: 'Su nombre',
+          labelText: 'Nombre',
+          suffixIcon: Icon(Icons.accessibility),
+          icon: Icon(Icons.account_circle)),
+      onChanged: (valor) {
+        setState(() {
+          _nombreD = valor;
+        });
+      },
+    );
   }
 
-  Widget _crearPassword() {
+  Widget _crearEdad() {
     return TextField(
-        obscureText: true,
-        decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-            hintText: 'Password',
-            labelText: 'Password',
-            suffixIcon: Icon(Icons.lock_open),
-            icon: Icon(Icons.lock)),
-        onChanged: (valor) => setState(() {
-              _email = valor;
-            }));
+      // autofocus: true,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+          hintText: 'Edad de la mascota',
+          labelText: 'Edad',
+          icon: Icon(Icons.pin)),
+      onChanged: (valor) {
+        setState(() {
+          _edad = valor;
+        });
+      },
+    );
+  }
+
+  Widget _crearTel() {
+    return TextField(
+      // autofocus: true,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+          hintText: 'Su número de teléfono',
+          labelText: 'Teléfono',
+          suffixIcon: Icon(Icons.phone_android),
+          icon: Icon(Icons.phone)),
+      onChanged: (valor) {
+        setState(() {
+          _telefono = valor;
+        });
+      },
+    );
+  }
+
+  Widget _crearRaza() {
+    return TextField(
+      // autofocus: true,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+          hintText: 'Raza de su mascota',
+          labelText: 'Raza',
+          icon: Icon(Icons.pending_actions_sharp)),
+      onChanged: (valor) {
+        setState(() {
+          _raza = valor;
+        });
+      },
+    );
   }
 
   Widget _crearFecha(BuildContext context) {
@@ -112,8 +167,8 @@ class _InputPageState extends State<InputPage> {
     DateTime picked = await showDatePicker(
         context: context,
         initialDate: new DateTime.now(),
-        firstDate: new DateTime(2018),
-        lastDate: new DateTime(2025),
+        firstDate: new DateTime(2005),
+        lastDate: new DateTime(2022),
         locale: Locale('es', 'ES'));
 
     if (picked != null) {
@@ -127,7 +182,7 @@ class _InputPageState extends State<InputPage> {
   List<DropdownMenuItem<String>> getOpcionesDropdown() {
     List<DropdownMenuItem<String>> lista = new List();
 
-    _poderes.forEach((poder) {
+    _tipoMascota.forEach((poder) {
       lista.add(DropdownMenuItem(
         child: Text(poder),
         value: poder,
@@ -140,7 +195,7 @@ class _InputPageState extends State<InputPage> {
   Widget _crearDropdown() {
     return Row(
       children: <Widget>[
-        Icon(Icons.select_all),
+        Icon(Icons.list),
         SizedBox(width: 30.0),
         Expanded(
           child: DropdownButton(
@@ -157,11 +212,34 @@ class _InputPageState extends State<InputPage> {
     );
   }
 
-  Widget _crearPersona() {
-    return ListTile(
-      title: Text('Nombre es: $_nombre'),
-      subtitle: Text('Email: $_email'),
-      trailing: Text(_opcionSeleccionada),
-    );
+  void _mostrarAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0)),
+            title: Text('Datos de la mascota'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text('Nombre del animalito: ' + _nombreD),
+              ],
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Cancelar'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 }
